@@ -16,7 +16,7 @@ using SharpCompress.Compressors.Deflate;
 // ReSharper disable NotAccessedField.Local
 // ReSharper disable RedundantAssignment
 // ReSharper disable UnusedVariable
-#pragma warning disable 0219
+#pragma warning disable 0219, 414
 namespace OpenBve
 {
 	class MsTsShapeParser
@@ -1077,4 +1077,4 @@ namespace OpenBve
 		}
 	}
 }
-#pragma warning restore 0219
+#pragma warning restore 0219, 414

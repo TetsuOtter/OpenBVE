@@ -1006,8 +1006,7 @@ namespace TrainEditor {
 			// hover
 			{
 				float x = (MotorHoverX - MotorMinimumX) * factorX;
-				Pen p = new Pen(Color.DimGray);
-				p.DashStyle = DashStyle.Dash;
+				Pen p = new Pen(Color.DimGray) { DashStyle = DashStyle.Dash };
 				e.Graphics.DrawLine(p, new PointF(x, 0.0f), new PointF(x, (float)height));
 				p.Dispose();
 			}

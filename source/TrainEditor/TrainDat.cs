@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Windows.Forms;
+// ReSharper disable UnusedMember.Global
 
 namespace TrainEditor {
 	internal static class TrainDat {
@@ -87,6 +88,7 @@ namespace TrainEditor {
 		// brake
 		/// <summary>The Brake section of the train.dat. All members are stored in the unit as specified by the train.dat documentation.</summary>
 		internal class Brake {
+			//TODO: The brake systems component needs to be separated from openBVE into a separate DLL we can reference here to avoid duplication
 			internal enum BrakeTypes {
 				ElectromagneticStraightAirBrake = 0,
 				ElectricCommandBrake = 1,
@@ -122,7 +124,9 @@ namespace TrainEditor {
 			internal double MainReservoirMinimumPressure;
 			internal double MainReservoirMaximumPressure;
 			internal double BrakePipeNormalPressure;
-			internal Pressure() {
+			internal Pressure()
+			{
+				this.BrakePipeNormalPressure = 0.0;
 				this.BrakeCylinderServiceMaximumPressure = 480.0;
 				this.BrakeCylinderEmergencyMaximumPressure = 480.0;
 				this.MainReservoirMinimumPressure = 690.0;
@@ -332,7 +336,6 @@ namespace TrainEditor {
 		/// <returns>An instance of the Train class.</returns>
 		internal static Train Load(string FileName) {
 			Train t = new Train();
-			t.Pressure.BrakePipeNormalPressure = 0.0;
 			System.Globalization.CultureInfo Culture = System.Globalization.CultureInfo.InvariantCulture;
 			string[] Lines = System.IO.File.ReadAllLines(FileName, new System.Text.UTF8Encoding());
 			for (int i = 0; i < Lines.Length; i++) {
@@ -910,6 +913,10 @@ namespace TrainEditor {
 						break;
 				}
 				int k;
+				if (m == null)
+				{
+					continue;
+				}
 				for (k = m.Entries.Length - 1; k >= 0; k--) {
 					if (m.Entries[k].SoundIndex >= 0) break;
 				}

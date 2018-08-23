@@ -218,7 +218,6 @@ namespace OpenBve
 
 		private static void RenderATSDebugOverlay()
 		{
-			System.Globalization.CultureInfo Culture = System.Globalization.CultureInfo.InvariantCulture;
 			// debug
 			GL.Color4(0.5, 0.5, 0.5, 0.5);
 			RenderOverlaySolid(0.0f, 0.0f, (double)Screen.Width, (double)Screen.Height);
