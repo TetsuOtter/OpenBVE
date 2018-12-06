@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Threading;
+using OpenBveShared;
 using OpenTK;
 using OpenTK.Graphics;
 using OpenTK.Graphics.OpenGL;
@@ -51,7 +52,7 @@ namespace OpenBve
                 {
                     ReducedModeEnteringTime = 2500;
                 }
-                if (World.CameraAlignmentDirection.Position.X != 0.0 | World.CameraAlignmentDirection.Position.Y != 0.0 | World.CameraAlignmentDirection.Position.Z != 0.0 | World.CameraAlignmentDirection.Pitch != 0.0 | World.CameraAlignmentDirection.Yaw != 0.0 | World.CameraAlignmentDirection.Roll != 0.0 | World.CameraAlignmentDirection.TrackPosition != 0.0 | World.CameraAlignmentDirection.Zoom != 0.0)
+                if (OpenBveShared.Camera.CameraAlignmentDirection.Position.X != 0.0 | OpenBveShared.Camera.CameraAlignmentDirection.Position.Y != 0.0 | OpenBveShared.Camera.CameraAlignmentDirection.Position.Z != 0.0 | OpenBveShared.Camera.CameraAlignmentDirection.Pitch != 0.0 | OpenBveShared.Camera.CameraAlignmentDirection.Yaw != 0.0 | OpenBveShared.Camera.CameraAlignmentDirection.Roll != 0.0 | OpenBveShared.Camera.CameraAlignmentDirection.TrackPosition != 0.0 | OpenBveShared.Camera.CameraAlignmentDirection.Zoom != 0.0)
                 {
                     ReducedModeEnteringTime = 2500;
                 }
@@ -68,10 +69,9 @@ namespace OpenBve
             }
             DateTime d = DateTime.Now;
             Game.SecondsSinceMidnight = (double)(3600 * d.Hour + 60 * d.Minute + d.Second) + 0.001 * (double)d.Millisecond;
-            ObjectManager.UpdateAnimatedWorldObjects(TimeElapsed, false);
+            GameObjectManager.UpdateAnimatedWorldObjects(TimeElapsed, false);
             World.UpdateAbsoluteCamera(TimeElapsed);
-            ObjectManager.UpdateVisibility(World.CameraTrackFollower.TrackPosition + World.CameraCurrentAlignment.Position.Z);
-	        TextureManager.Update(TimeElapsed);
+            ObjectManager.UpdateVisibility(World.CameraTrackFollower.TrackPosition + OpenBveShared.Camera.CameraCurrentAlignment.Position.Z);
 			Sounds.Update(TimeElapsed, Sounds.SoundModels.Linear);
             Renderer.RenderScene(TimeElapsed);
             SwapBuffers();
@@ -93,13 +93,13 @@ namespace OpenBve
 			MouseUp += Program.MouseEvent;
 	        FileDrop += Program.FileDrop;
             Program.ResetCamera();
-            World.BackgroundImageDistance = 600.0;
-            World.ForwardViewingDistance = 600.0;
-            World.BackwardViewingDistance = 0.0;
-            World.ExtraViewingDistance = 50.0;
-
-            Renderer.Initialize();
-            Renderer.InitializeLighting();
+            OpenBveShared.Renderer.BackgroundImageDistance = 600.0;
+	        OpenBveShared.World.ForwardViewingDistance = 600.0;
+	        OpenBveShared.World.BackwardViewingDistance = 0.0;
+	        OpenBveShared.World.ExtraViewingDistance = 50.0;
+	        OpenBveShared.Renderer.Initialize(Program.CurrentHost);
+            Renderer.LoadEventTextures();
+            OpenBveShared.Renderer.InitializeLighting();
             Sounds.Initialize();
             Program.UpdateViewport();
             if (Program.processCommandLineArgs)
@@ -150,7 +150,8 @@ namespace OpenBve
 				Program.currentGameWindow.ProcessEvents();
 				if (Program.currentGameWindow.IsExiting)
 					Loading.Cancel = true;
-				Renderer.DrawLoadingScreen();
+				OpenBveShared.Renderer.DrawLoadingScreen(Renderer.ScreenWidth, Renderer.ScreenHeight, Loading.RouteProgress, Loading.RouteProgress != 1.0 ? -1.0 : 1.0);
+				
 				Program.currentGameWindow.SwapBuffers();
 
 				if (Loading.JobAvailable)
@@ -177,7 +178,6 @@ namespace OpenBve
 			}
 			if (!Loading.Cancel)
 			{
-
 				GL.PopMatrix();
 				GL.MatrixMode(MatrixMode.Projection);
 			}

@@ -1,4 +1,5 @@
 ﻿using System;
+using OpenBveShared;
 using OpenTK.Graphics.OpenGL;
 
 namespace OpenBve
@@ -60,8 +61,8 @@ namespace OpenBve
                     case Interface.MotionBlurMode.High: strength = 0.0064; break;
                     default: strength = 0.0040; break;
                 }
-                double speed = Math.Abs(World.CameraSpeed);
-                double denominator = strength * Game.InfoFrameRate * Math.Sqrt(speed);
+                double speed = Math.Abs(Camera.CameraSpeed);
+                double denominator = strength * OpenBveShared.Renderer.Statistics.FrameRate * Math.Sqrt(speed);
                 float factor;
                 if (denominator > 0.001)
                 {
@@ -73,15 +74,15 @@ namespace OpenBve
                 }
                 // initialize
                 GL.BlendFunc(BlendingFactor.SrcAlpha, BlendingFactor.OneMinusSrcAlpha);
-                if (!BlendEnabled)
+                if (!OpenBveShared.Renderer.BlendEnabled)
                 {
                     GL.Enable(EnableCap.Blend);
-                    BlendEnabled = true;
+	                OpenBveShared.Renderer.BlendEnabled = true;
                 }
-                if (LightingEnabled)
+                if (OpenBveShared.Renderer.LightingEnabled)
                 {
                     GL.Disable(EnableCap.Lighting);
-                    LightingEnabled = false;
+	                OpenBveShared.Renderer.LightingEnabled = false;
                 }
                 GL.MatrixMode(MatrixMode.Projection);
                 GL.PushMatrix();
@@ -90,10 +91,10 @@ namespace OpenBve
                 GL.MatrixMode(MatrixMode.Modelview);
                 GL.PushMatrix();
                 GL.LoadIdentity();
-                if (!TexturingEnabled)
+                if (!OpenBveShared.Renderer.TexturingEnabled)
                 {
                     GL.Enable(EnableCap.Texture2D);
-                    TexturingEnabled = true;
+	                OpenBveShared.Renderer.TexturingEnabled = true;
                 }
                 // render
                 GL.BindTexture(TextureTarget.Texture2D, PixelBufferOpenGlTextureIndex);

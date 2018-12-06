@@ -98,8 +98,8 @@ namespace OpenBve
 #if !DEBUG
 									try {
 #endif
-                        ObjectManager.UnifiedObject o = ObjectManager.LoadObject(Program.Files[i], System.Text.Encoding.UTF8, ObjectLoadMode.Normal, false, false, false);
-                        ObjectManager.CreateObject(o, Vector3.Zero,
+                        UnifiedObject o = ObjectManager.LoadObject(Program.Files[i], System.Text.Encoding.UTF8, ObjectLoadMode.Normal, false, false, false);
+                        o.CreateObject(Vector3.Zero,
                             new Transformation(0.0, 0.0, 0.0), new Transformation(0.0, 0.0, 0.0), true, 0.0,
                             0.0, 25.0, 0.0);
 #if !DEBUG
@@ -113,7 +113,6 @@ namespace OpenBve
                     ObjectManager.UpdateAnimatedWorldObjects(0.01, true);
                     
             }
-            Renderer.TransparentColorDepthSorting = Interface.CurrentOptions.TransparencyMode == TransparencyMode.Quality & Interface.CurrentOptions.Interpolation != OpenBveApi.Graphics.InterpolationMode.NearestNeighbor & Interface.CurrentOptions.Interpolation != OpenBveApi.Graphics.InterpolationMode.Bilinear;
 	        Interface.CurrentOptions.UseNewXParser = comboBoxNewXParser.SelectedIndex;
             Options.SaveOptions();
             this.Close();

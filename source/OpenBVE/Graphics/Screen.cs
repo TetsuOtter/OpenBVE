@@ -6,6 +6,7 @@ using OpenTK.Graphics;
 using OpenTK.Graphics.OpenGL;
 using OpenBveApi.Interface;
 using OpenBveApi.Runtime;
+using OpenBveShared;
 
 
 namespace OpenBve
@@ -125,9 +126,9 @@ namespace OpenBve
             Height = newHeight;
             if (Loading.Complete)
             {
-                Renderer.UpdateViewport(Renderer.ViewPortChangeMode.NoChange);
+                Renderer.UpdateViewport(OpenBveShared.Renderer.ViewPortChangeMode.NoChange);
                 World.InitializeCameraRestriction();
-                if (Renderer.OptionBackfaceCulling)
+                if (OpenBveShared.Renderer.OptionBackfaceCulling)
                 {
                     GL.Enable(EnableCap.CullFace);
                 }
@@ -152,11 +153,10 @@ namespace OpenBve
             
 			Fullscreen = !Fullscreen;
 			// begin HACK //
-			Renderer.ClearDisplayLists();
-			
+			OpenBveShared.Renderer.ClearDisplayLists();
 			GL.Disable(EnableCap.Fog);
 			GL.Disable(EnableCap.Lighting);
-			Renderer.LightingEnabled = false;
+			OpenBveShared.Renderer.LightingEnabled = false;
 			if (Fullscreen)
 			{
                 
@@ -196,14 +196,14 @@ namespace OpenBve
                 Screen.Width = Interface.CurrentOptions.WindowWidth;
                 Screen.Height = Interface.CurrentOptions.WindowHeight;
 			}
-			Renderer.InitializeLighting();
-			Renderer.UpdateViewport(Renderer.ViewPortChangeMode.NoChange);
+			OpenBveShared.Renderer.InitializeLighting();
+			Renderer.UpdateViewport(OpenBveShared.Renderer.ViewPortChangeMode.NoChange);
 			Renderer.InitializeMotionBlur();
 			Timetable.CreateTimetable();
 			Timetable.UpdateCustomTimetable(null, null);
 			
 			World.InitializeCameraRestriction();
-			if (Renderer.OptionBackfaceCulling)
+			if (OpenBveShared.Renderer.OptionBackfaceCulling)
 			{
 			    GL.Enable(EnableCap.CullFace);
 			}
@@ -216,13 +216,13 @@ namespace OpenBve
 
             //Reset the camera when switching between fullscreen and windowed mode
             //Otherwise, if the aspect ratio changes distortion will occur until the view is changed or the camera reset
-            if (World.CameraMode == CameraViewMode.Interior | World.CameraMode == CameraViewMode.InteriorLookAhead)
+            if (Camera.CameraView == CameraViewMode.Interior | Camera.CameraView == CameraViewMode.InteriorLookAhead)
             {
-                World.CameraCurrentAlignment.Position = new OpenBveApi.Math.Vector3(0.0, 0.0, 0.0);
+                Camera.CameraCurrentAlignment.Position = new OpenBveApi.Math.Vector3(0.0, 0.0, 0.0);
             }
-            World.CameraCurrentAlignment.Yaw = 0.0;
-            World.CameraCurrentAlignment.Pitch = 0.0;
-            World.CameraCurrentAlignment.Roll = 0.0;
+            Camera.CameraCurrentAlignment.Yaw = 0.0;
+            Camera.CameraCurrentAlignment.Pitch = 0.0;
+            Camera.CameraCurrentAlignment.Roll = 0.0;
 		}
         
 		

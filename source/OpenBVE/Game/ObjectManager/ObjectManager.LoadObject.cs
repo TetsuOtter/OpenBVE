@@ -173,6 +173,10 @@ namespace OpenBve
 			}
 			if (Result != null)
 			{
+				if (Interface.CurrentOptions.ObjectOptimizationVertexCulling == false)
+				{
+					PreserveVertices = true;
+				}
 				Result.OptimizeObject(PreserveVertices);
 			}
 			return Result;
@@ -274,6 +278,10 @@ namespace OpenBve
 			}
 			if (Result != null)
 			{
+				if (Interface.CurrentOptions.ObjectOptimizationVertexCulling == false)
+				{
+					PreserveVertices = true;
+				}
 				Result.OptimizeObject(PreserveVertices);
 			}
 			return Result;

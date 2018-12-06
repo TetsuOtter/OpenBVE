@@ -5,6 +5,7 @@ using OpenTK.Graphics.OpenGL;
 using OpenTK.Input;             // for Key
 using System;
 using System.Drawing;
+using OpenBveShared;
 
 namespace OpenBve
 {
@@ -314,7 +315,7 @@ namespace OpenBve
 					{
 						continue;
 					}
-					size = Renderer.MeasureString(Game.Menu.MenuFont, Items[i].Text);
+					size = OpenBveShared.Renderer.MeasureString(Game.Menu.MenuFont, Items[i].Text);
 					if (size.Width > Width)
 						Width = size.Width;
 					if (!(Items[i] is MenuCaption) && size.Width > ItemWidth)
@@ -728,7 +729,7 @@ namespace OpenBve
 			SingleMenu menu = Menus[CurrMenu];
 			// overlay background
 			GL.Color4(overlayColor.R, overlayColor.G, overlayColor.B, overlayColor.A);
-			Renderer.RenderOverlaySolid(0.0, 0.0, (double)Screen.Width, (double)Screen.Height);
+			OpenBveShared.Renderer.RenderOverlaySolid(0.0, 0.0, (double)Screen.Width, (double)Screen.Height);
 			GL.Color4(1.0f, 1.0f, 1.0f, 1.0f);
 
 			// HORIZONTAL PLACEMENT: centre the menu in the main window
@@ -740,18 +741,18 @@ namespace OpenBve
 
 			// draw the menu background
 			GL.Color4(backgroundColor.R, backgroundColor.G, backgroundColor.B, backgroundColor.A);
-			Renderer.RenderOverlaySolid(menuXmin - MenuBorderX, menuYmin - MenuBorderY,
+			OpenBveShared.Renderer.RenderOverlaySolid(menuXmin - MenuBorderX, menuYmin - MenuBorderY,
 				menuXmax + MenuBorderX, menuYmax + MenuBorderY);
 
 			// if not starting from the top of the menu, draw a dimmed ellipsis item
 			if (menu.Selection == menu.TopItem - 1 && !isCustomisingControl)
 			{
 				GL.Color4(highlightColor.R, highlightColor.G, highlightColor.B, highlightColor.A);
-				Renderer.RenderOverlaySolid(itemLeft - MenuItemBorderX, menuYmin/*-MenuItemBorderY*/,
+				OpenBveShared.Renderer.RenderOverlaySolid(itemLeft - MenuItemBorderX, menuYmin/*-MenuItemBorderY*/,
 					itemLeft + menu.ItemWidth + MenuItemBorderX, menuYmin + em + MenuItemBorderY * 2);
 			}
 			if (menu.TopItem > 0)
-				Renderer.DrawString(MenuFont, "...", new Point(itemX, menuYmin),
+				OpenBveShared.Renderer.DrawString(MenuFont, "...", new Point(itemX, menuYmin),
 					menu.Align, ColourDimmed, false);
 			// draw the items
 			int itemY = topItemY;
@@ -767,17 +768,17 @@ namespace OpenBve
 					// HACK! the highlight rectangle has to be shifted a little down to match
 					// the text body. OpenGL 'feature'?
 					GL.Color4(highlightColor.R, highlightColor.G, highlightColor.B, highlightColor.A);
-					Renderer.RenderOverlaySolid(itemLeft - MenuItemBorderX, itemY/*-MenuItemBorderY*/,
+					OpenBveShared.Renderer.RenderOverlaySolid(itemLeft - MenuItemBorderX, itemY/*-MenuItemBorderY*/,
 						itemLeft + menu.ItemWidth + MenuItemBorderX, itemY + em + MenuItemBorderY * 2);
 					// draw the text
-					Renderer.DrawString(MenuFont, menu.Items[i].Text, new Point(itemX, itemY),
+					OpenBveShared.Renderer.DrawString(MenuFont, menu.Items[i].Text, new Point(itemX, itemY),
 						menu.Align, ColourHighlight, false);
 				}
 				else if (menu.Items[i] is MenuCaption)
-					Renderer.DrawString(MenuFont, menu.Items[i].Text, new Point(itemX, itemY),
+					OpenBveShared.Renderer.DrawString(MenuFont, menu.Items[i].Text, new Point(itemX, itemY),
 						menu.Align, ColourCaption, false);
 				else
-					Renderer.DrawString(MenuFont, menu.Items[i].Text, new Point(itemX, itemY),
+					OpenBveShared.Renderer.DrawString(MenuFont, menu.Items[i].Text, new Point(itemX, itemY),
 						menu.Align, ColourNormal, false);
 				itemY += lineHeight;
 			}
@@ -786,12 +787,12 @@ namespace OpenBve
 			if (menu.Selection == menu.TopItem + visibleItems)
 			{
 				GL.Color4(highlightColor.R, highlightColor.G, highlightColor.B, highlightColor.A);
-				Renderer.RenderOverlaySolid(itemLeft - MenuItemBorderX, itemY/*-MenuItemBorderY*/,
+				OpenBveShared.Renderer.RenderOverlaySolid(itemLeft - MenuItemBorderX, itemY/*-MenuItemBorderY*/,
 					itemLeft + menu.ItemWidth + MenuItemBorderX, itemY + em + MenuItemBorderY * 2);
 			}
 			// if not at the end of the menu, draw a dimmed ellipsis item at the bottom
 			if (i < menu.Items.Length - 1)
-				Renderer.DrawString(MenuFont, "...", new Point(itemX, itemY),
+				OpenBveShared.Renderer.DrawString(MenuFont, "...", new Point(itemX, itemY),
 					menu.Align, ColourDimmed, false);
 		}
 
